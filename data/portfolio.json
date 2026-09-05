@@ -1,0 +1,112 @@
+{
+  "portfolio": [
+    {
+      "id": "business-website",
+      "title": "Business Website Platform",
+      "category": "Web Development",
+      "description": "Modern, responsive and scalable website platform designed to establish a professional digital presence for growing businesses.",
+      "status": "Concept",
+      "year": "2026",
+      "client": "Aman Global International Services",
+      "technologies": [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "Responsive Design"
+      ],
+      "featured": true,
+      "image": "assets/images/portfolio/business-website.jpg",
+      "link": "#"
+    },
+    {
+      "id": "ai-business-assistant",
+      "title": "AI Business Assistant",
+      "category": "AI Solutions",
+      "description": "AI-powered business assistant concept designed to support customer questions, business workflows, automation and productivity.",
+      "status": "Concept",
+      "year": "2026",
+      "client": "Aman Global International Services",
+      "technologies": [
+        "Artificial Intelligence",
+        "Automation",
+        "JavaScript",
+        "AI APIs"
+      ],
+      "featured": true,
+      "image": "assets/images/portfolio/ai-business-assistant.jpg",
+      "link": "#"
+    },
+    {
+      "id": "power-bi-dashboard",
+      "title": "Business Intelligence Dashboard",
+      "category": "Data & Analytics",
+      "description": "Interactive business intelligence dashboard concept for monitoring financial performance, KPIs, sales, operations and management reporting.",
+      "status": "Concept",
+      "year": "2026",
+      "client": "Aman Global International Services",
+      "technologies": [
+        "Power BI",
+        "Data Analytics",
+        "Business Intelligence",
+        "Data Visualization"
+      ],
+      "featured": true,
+      "image": "assets/images/portfolio/power-bi-dashboard.jpg",
+      "link": "#"
+    },
+    {
+      "id": "accounting-system",
+      "title": "Digital Accounting Solution",
+      "category": "Accounting & Finance",
+      "description": "Future digital accounting and financial reporting solution designed to support bookkeeping, financial analysis, reporting and business decision-making.",
+      "status": "Concept",
+      "year": "2026",
+      "client": "Aman Global International Services",
+      "technologies": [
+        "Accounting",
+        "Bookkeeping",
+        "Financial Reporting",
+        "Data Analytics"
+      ],
+      "featured": true,
+      "image": "assets/images/portfolio/accounting-system.jpg",
+      "link": "#"
+    },
+    {
+      "id": "digital-growth",
+      "title": "Digital Growth Strategy",
+      "category": "Digital Marketing",
+      "description": "Complete digital growth strategy combining search engine optimization, content marketing, social media and lead generation.",
+      "status": "Concept",
+      "year": "2026",
+      "client": "Aman Global International Services",
+      "technologies": [
+        "SEO",
+        "Content Marketing",
+        "Social Media",
+        "Lead Generation"
+      ],
+      "featured": false,
+      "image": "assets/images/portfolio/digital-growth.jpg",
+      "link": "#"
+    },
+    {
+      "id": "media-content",
+      "title": "AI Media & Content Studio",
+      "category": "Media & Content",
+      "description": "Future AI-assisted media and content production service for creating professional videos, digital campaigns and branded content.",
+      "status": "Concept",
+      "year": "2026",
+      "client": "Aman Global International Services",
+      "technologies": [
+        "AI Content Creation",
+        "Video Production",
+        "Digital Media",
+        "Content Strategy"
+      ],
+      "featured": false,
+      "image": "assets/images/portfolio/media-content.jpg",
+      "link": "#"
+    }
+  ]
+}

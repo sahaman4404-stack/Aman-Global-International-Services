@@ -1,0 +1,34 @@
+{
+  "industries": [
+    {
+      "id": "finance",
+      "name": "Finance & Accounting",
+      "description": "Digital, accounting and analytics solutions for financial businesses."
+    },
+    {
+      "id": "education",
+      "name": "Education",
+      "description": "Technology and digital solutions for schools, institutes and education platforms."
+    },
+    {
+      "id": "retail",
+      "name": "Retail & E-commerce",
+      "description": "Web, automation, marketing and analytics solutions for retail businesses."
+    },
+    {
+      "id": "healthcare",
+      "name": "Healthcare",
+      "description": "Digital platforms and business solutions for healthcare organizations."
+    },
+    {
+      "id": "professional-services",
+      "name": "Professional Services",
+      "description": "Technology and business support solutions for professional service firms."
+    },
+    {
+      "id": "startups",
+      "name": "Startups",
+      "description": "Flexible technology and growth solutions for emerging businesses."
+    }
+  ]
+}

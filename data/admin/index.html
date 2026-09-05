@@ -1,0 +1,5242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        AGIS Admin Dashboard
+    </title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+            background: #07111f;
+            color: #e8eef7;
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================================
+           LAYOUT
+        ========================================= */
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .sidebar {
+            width: 250px;
+            background: #0b1728;
+            border-right: 1px solid #1b2b42;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            padding: 25px 22px;
+            border-bottom: 1px solid #1b2b42;
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .brand-title span {
+            color: #4da3ff;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            color: #7f91a8;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            padding: 18px 12px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #65778d;
+            letter-spacing: 1.5px;
+            padding: 12px 12px 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 13px;
+            border-radius: 9px;
+            color: #9bacbf;
+            font-size: 14px;
+            margin-bottom: 4px;
+            transition: .2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #132640;
+            color: #ffffff;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            padding: 15px 12px;
+            border-top: 1px solid #1b2b42;
+        }
+
+        .sidebar-bottom a {
+            display: block;
+            padding: 10px 13px;
+            color: #8293a8;
+            font-size: 13px;
+        }
+
+        .sidebar-bottom a:hover {
+            color: #ffffff;
+        }
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-width: 0;
+        }
+
+        .topbar {
+            height: 76px;
+            border-bottom: 1px solid #1b2b42;
+            background: #091625;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .topbar-subtitle {
+            font-size: 12px;
+            color: #74879e;
+            margin-top: 3px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(
+                135deg,
+                #2677d9,
+                #5db8ff
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+        }
+
+        .admin-user-text strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .admin-user-text small {
+            color: #71849a;
+            font-size: 11px;
+        }
+
+        .content {
+            padding: 30px;
+            max-width: 1600px;
+            margin: auto;
+        }
+
+        /* =========================================
+           WELCOME
+        ========================================= */
+
+        .welcome {
+            background:
+                radial-gradient(
+                    circle at right,
+                    rgba(40, 131, 230, .24),
+                    transparent 40%
+                ),
+                #0c1b2f;
+
+            border: 1px solid #1d3858;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #8ea1b8;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           STATS
+        ========================================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #0c1a2b;
+            border: 1px solid #1b2d45;
+            border-radius: 14px;
+            padding: 21px;
+        }
+
+        .stat-label {
+            color: #8193a8;
+            font-size: 12px;
+            margin-bottom: 9px;
+        }
+
+        .stat-card h2 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .stat-note {
+            color: #4d9df2;
+            font-size: 11px;
+        }
+
+        /* =========================================
+           GRID
+        ========================================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 2fr)
+                minmax(280px, 1fr);
+            gap: 20px;
+        }
+
+        .left-column,
+        .right-column {
+            min-width: 0;
+        }
+
+        .card {
+            background: #0c1a2b;
+            border: 1px solid #1b2d45;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #1b2d45;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+        }
+
+        .card-header p {
+            color: #71859c;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* =========================================
+           BUTTONS
+        ========================================= */
+
+        .add-btn,
+        .primary-btn {
+            border: 0;
+            background: #277bd8;
+            color: white;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .add-btn:hover,
+        .primary-btn:hover {
+            background: #338ce9;
+        }
+
+        .refresh-btn {
+            border: 1px solid #2a405c;
+            background: #112238;
+            color: #b9c8d9;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .refresh-btn:hover {
+            background: #172d47;
+        }
+
+        .danger-btn {
+            background: #7d2531;
+            color: #fff;
+            border: 0;
+            padding: 7px 10px;
+            border-radius: 7px;
+            font-size: 11px;
+        }
+
+        .danger-btn:hover {
+            background: #a52e3d;
+        }
+
+        .small-btn {
+            border: 1px solid #29415e;
+            background: #12243a;
+            color: #c6d4e2;
+            padding: 7px 9px;
+            border-radius: 7px;
+            font-size: 11px;
+            margin-right: 3px;
+            margin-bottom: 3px;
+        }
+
+        .small-btn:hover {
+            background: #19314d;
+        }
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .data-table th {
+            text-align: left;
+            font-size: 11px;
+            color: #71859c;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 13px 16px;
+            background: #0a1727;
+            border-bottom: 1px solid #1b2d45;
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #17283d;
+            font-size: 12px;
+            color: #c7d3df;
+            vertical-align: middle;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .data-table tr:hover td {
+            background: #0e2034;
+        }
+
+        .service-name {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .slug {
+            color: #7295bb;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        .description-text {
+            color: #8da0b5;
+            line-height: 1.5;
+            max-width: 280px;
+        }
+
+        /* =========================================
+           STATUS
+        ========================================= */
+
+        .status {
+            display: inline-flex;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status-active {
+            background: rgba(25, 180, 110, .12);
+            color: #42d59a;
+        }
+
+        .status-inactive {
+            background: rgba(220, 80, 80, .12);
+            color: #ff8585;
+        }
+
+        .status-new {
+            background: rgba(45, 137, 230, .12);
+            color: #61adff;
+        }
+
+        /* =========================================
+           EMPTY / LOADING / ERROR
+        ========================================= */
+
+        .loading,
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: #73869d;
+            font-size: 13px;
+        }
+
+        .error-message {
+            display: none;
+            margin: 15px 20px;
+            padding: 11px;
+            border-radius: 8px;
+            background: rgba(220, 60, 70, .1);
+            border: 1px solid rgba(220, 60, 70, .25);
+            color: #ff8c93;
+            font-size: 12px;
+        }
+
+        /* =========================================
+           DETAILS
+        ========================================= */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            padding: 20px;
+        }
+
+        .info-box {
+            background: #0a1727;
+            border: 1px solid #192d44;
+            padding: 13px;
+            border-radius: 9px;
+        }
+
+        .info-box small {
+            display: block;
+            color: #667b92;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .info-box strong {
+            font-size: 12px;
+            color: #d9e3ed;
+            word-break: break-word;
+        }
+
+        /* =========================================
+           QUICK ACTIONS
+        ========================================= */
+
+        .quick-actions {
+            padding: 15px;
+        }
+
+        .quick-action {
+            display: block;
+            padding: 13px;
+            background: #0a1727;
+            border: 1px solid #192d44;
+            border-radius: 8px;
+            color: #b9c8d7;
+            font-size: 12px;
+            margin-bottom: 8px;
+            transition: .2s;
+        }
+
+        .quick-action:hover {
+            border-color: #2c79c9;
+            color: #ffffff;
+            background: #0e2136;
+        }
+
+        /* =========================================
+           ACTIVITY
+        ========================================= */
+
+        .activity-list {
+            padding: 5px 20px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #17283d;
+        }
+
+        .activity-item:last-child {
+            border-bottom: 0;
+        }
+
+        .activity-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: #122944;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #57aaff;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .activity-content strong {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .activity-content p {
+            color: #71859a;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .activity-content small {
+            display: block;
+            color: #50647a;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        /* =========================================
+           SYSTEM STATUS
+        ========================================= */
+
+        .system-status {
+            padding: 18px 20px;
+        }
+
+        .system-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #17283d;
+            font-size: 12px;
+        }
+
+        .system-row:last-child {
+            border-bottom: 0;
+        }
+
+        .online {
+            color: #43d79a;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 10px;
+            color: #566b82;
+            font-size: 11px;
+        }
+
+        /* =========================================
+           MODAL
+        ========================================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .72);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 500;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #0b192a;
+            border: 1px solid #29415e;
+            border-radius: 15px;
+            box-shadow: 0 25px 70px rgba(0,0,0,.5);
+        }
+
+        .modal-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #20334a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 16px;
+        }
+
+        .close-btn {
+            border: 0;
+            background: transparent;
+            color: #8295aa;
+            font-size: 22px;
+        }
+
+        .close-btn:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            color: #8799ad;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #263c56;
+            background: #081524;
+            color: #dce6ef;
+            border-radius: 8px;
+            padding: 10px 11px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #3286dd;
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #20334a;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .cancel-btn {
+            border: 1px solid #2b4059;
+            background: #122238;
+            color: #b7c6d5;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .modal-message {
+            display: none;
+            margin-top: 12px;
+            padding: 9px;
+            border-radius: 7px;
+            font-size: 11px;
+        }
+
+        .modal-message.success {
+            display: block;
+            color: #55d99e;
+            background: rgba(30, 180, 110, .1);
+        }
+
+        .modal-message.error {
+            display: block;
+            color: #ff8585;
+            background: rgba(220, 70, 70, .1);
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 1200px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 1100px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 220px;
+                transform: translateX(-100%);
+                transition: .25s;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+        }
+
+        @media (max-width: 560px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-user-text {
+                display: none;
+            }
+
+            .welcome h1 {
+                font-size: 21px;
+            }
+
+            .card-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-title">
+                AMAN <span>GLOBAL</span>
+            </div>
+
+            <div class="brand-subtitle">
+                INTERNATIONAL SERVICES
+            </div>
+
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-label">
+                Main
+            </div>
+
+            <a
+                href="#dashboard"
+                class="nav-item active"
+            >
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a
+                href="#leadsSection"
+                class="nav-item"
+            >
+                <span class="nav-icon">◉</span>
+                Leads
+            </a>
+
+            <a
+                href="#clientsSection"
+                class="nav-item"
+            >
+                <span class="nav-icon">♙</span>
+                Clients
+            </a>
+
+            <a
+                href="#servicesSection"
+                class="nav-item"
+            >
+                <span class="nav-icon">◆</span>
+                Services
+            </a>
+
+            <div class="nav-label">
+                Business
+            </div>
+
+            <a
+                href="#industriesSection"
+                class="nav-item"
+            >
+                <span class="nav-icon">▣</span>
+                Industries
+            </a>
+
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <span class="nav-icon">◈</span>
+                Portfolio
+            </a>
+
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <span class="nav-icon">✎</span>
+                Blog
+            </a>
+
+            <div class="nav-label">
+                Management
+            </div>
+
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <span class="nav-icon">✉</span>
+                Messages
+            </a>
+
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <span class="nav-icon">▥</span>
+                Reports
+            </a>
+
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="../index.html">
+                ← Back to Website
+            </a>
+
+            <a
+                href="#"
+                onclick="logoutAdmin(); return false;"
+            >
+                ↪ Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="topbar-title">
+                    Administrator Dashboard
+                </div>
+
+                <div class="topbar-subtitle">
+                    Aman Global International Services
+                </div>
+
+            </div>
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div class="admin-user-text">
+
+                    <strong>
+                        Administrator
+                    </strong>
+
+                    <small>
+                        Super Admin
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div
+            class="content"
+            id="dashboard"
+        >
+
+            <!-- =====================================
+                 WELCOME
+            ====================================== -->
+
+            <section class="welcome">
+
+                <h1>
+                    Welcome back, Administrator 👋
+                </h1>
+
+                <p>
+                    Manage your global business operations,
+                    leads, clients, services and industries
+                    from one place.
+                </p>
+
+            </section>
+
+
+            <!-- =====================================
+                 STATS
+            ====================================== -->
+
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        TOTAL LEADS
+                    </div>
+
+                    <h2 id="totalLeads">
+                        0
+                    </h2>
+
+                    <div class="stat-note">
+                        All project enquiries
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        NEW LEADS
+                    </div>
+
+                    <h2 id="newLeads">
+                        0
+                    </h2>
+
+                    <div class="stat-note">
+                        Requires attention
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        ACTIVE CLIENTS
+                    </div>
+
+                    <h2 id="activeClients">
+                        0
+                    </h2>
+
+                    <div class="stat-note">
+                        Current clients
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        SERVICES
+                    </div>
+
+                    <h2 id="totalServices">
+                        0
+                    </h2>
+
+                    <div class="stat-note">
+                        From Supabase
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        INDUSTRIES
+                    </div>
+
+                    <h2 id="totalIndustries">
+                        0
+                    </h2>
+
+                    <div class="stat-note">
+                        Business industries
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <div class="dashboard-grid">
+
+                <!-- =================================
+                     LEFT COLUMN
+                ================================== -->
+
+                <div class="left-column">
+
+
+                    <!-- =============================
+                         LEADS
+                    ============================== -->
+
+                    <section
+                        class="card"
+                        id="leadsSection"
+                    >
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Recent Leads
+                                </h3>
+
+                                <p>
+                                    Latest project requests
+                                </p>
+
+                            </div>
+
+                            <button
+                                class="refresh-btn"
+                                onclick="loadLeads()"
+                            >
+                                Refresh
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="leadError"
+                            class="error-message"
+                        ></div>
+
+                        <div
+                            id="leadContainer"
+                            class="table-wrap"
+                        >
+
+                            <div class="loading">
+                                Loading leads...
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =============================
+                         CLIENTS
+                    ============================== -->
+
+                    <section
+                        class="card"
+                        id="clientsSection"
+                    >
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Client Management
+                                </h3>
+
+                                <p>
+                                    Manage your active and inactive clients
+                                </p>
+
+                            </div>
+
+                            <div class="header-actions">
+
+                                <button
+                                    class="refresh-btn"
+                                    onclick="loadClients()"
+                                >
+                                    Refresh
+                                </button>
+
+                                <button
+                                    class="add-btn"
+                                    onclick="openClientModal()"
+                                >
+                                    + Add Client
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="clientError"
+                            class="error-message"
+                        ></div>
+
+                        <div
+                            id="clientContainer"
+                            class="table-wrap"
+                        >
+
+                            <div class="loading">
+                                Loading clients...
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =============================
+                         SERVICES
+                    ============================== -->
+
+                    <section
+                        class="card"
+                        id="servicesSection"
+                    >
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Services Management
+                                </h3>
+
+                                <p>
+                                    Manage AGIS services, status and display order
+                                </p>
+
+                            </div>
+
+                            <div class="header-actions">
+
+                                <button
+                                    class="refresh-btn"
+                                    onclick="loadServices()"
+                                >
+                                    Refresh
+                                </button>
+
+                                <button
+                                    class="add-btn"
+                                    onclick="openServiceModal()"
+                                >
+                                    + Add Service
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="serviceError"
+                            class="error-message"
+                        ></div>
+
+                        <div
+                            id="serviceContainer"
+                            class="table-wrap"
+                        >
+
+                            <div class="loading">
+                                Loading services...
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =============================
+                         INDUSTRIES
+                    ============================== -->
+
+                    <section
+                        class="card"
+                        id="industriesSection"
+                    >
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Industries Management
+                                </h3>
+
+                                <p>
+                                    Manage AGIS industries, status and display order
+                                </p>
+
+                            </div>
+
+                            <div class="header-actions">
+
+                                <button
+                                    class="refresh-btn"
+                                    onclick="loadIndustries()"
+                                >
+                                    Refresh
+                                </button>
+
+                                <button
+                                    class="add-btn"
+                                    onclick="openIndustryModal()"
+                                >
+                                    + Add Industry
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="industryError"
+                            class="error-message"
+                        ></div>
+
+                        <div
+                            id="industryContainer"
+                            class="table-wrap"
+                        >
+
+                            <div class="loading">
+                                Loading industries...
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =============================
+                         ACTIVITY
+                    ============================== -->
+
+                    <section class="card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Recent Activity
+                                </h3>
+
+                                <p>
+                                    Latest administrative activities
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="activity-list">
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon">
+                                    ✓
+                                </div>
+
+                                <div class="activity-content">
+
+                                    <strong>
+                                        Industries Management Enabled
+                                    </strong>
+
+                                    <p>
+                                        Industry management is connected to Supabase.
+                                    </p>
+
+                                    <small>
+                                        System
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon">
+                                    ✓
+                                </div>
+
+                                <div class="activity-content">
+
+                                    <strong>
+                                        Services Management Enabled
+                                    </strong>
+
+                                    <p>
+                                        AGIS service management is connected to Supabase.
+                                    </p>
+
+                                    <small>
+                                        System
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon">
+                                    ◉
+                                </div>
+
+                                <div class="activity-content">
+
+                                    <strong>
+                                        Client Management Active
+                                    </strong>
+
+                                    <p>
+                                        Client records can be created, edited and deleted.
+                                    </p>
+
+                                    <small>
+                                        System
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon">
+                                    ✉
+                                </div>
+
+                                <div class="activity-content">
+
+                                    <strong>
+                                        Lead Management Active
+                                    </strong>
+
+                                    <p>
+                                        Website project requests are stored in Supabase.
+                                    </p>
+
+                                    <small>
+                                        System
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- =================================
+                     RIGHT COLUMN
+                ================================== -->
+
+                <div class="right-column">
+
+
+                    <!-- =============================
+                         QUICK ACTIONS
+                    ============================== -->
+
+                    <section class="card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Quick Actions
+                                </h3>
+
+                                <p>
+                                    Common management tasks
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="quick-actions">
+
+                            <a
+                                href="#clientsSection"
+                                class="quick-action"
+                                onclick="openClientModal();"
+                            >
+                                + Add New Client
+                            </a>
+
+                            <a
+                                href="#servicesSection"
+                                class="quick-action"
+                                onclick="openServiceModal();"
+                            >
+                                + Create Service
+                            </a>
+
+                            <a
+                                href="#industriesSection"
+                                class="quick-action"
+                                onclick="openIndustryModal();"
+                            >
+                                + Add Industry
+                            </a>
+
+                            <a
+                                href="#"
+                                class="quick-action"
+                            >
+                                + Add Portfolio
+                            </a>
+
+                            <a
+                                href="#"
+                                class="quick-action"
+                            >
+                                + Write Blog
+                            </a>
+
+                            <a
+                                href="#"
+                                class="quick-action"
+                            >
+                                View Reports
+                            </a>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =============================
+                         SYSTEM STATUS
+                    ============================== -->
+
+                    <section class="card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    System Status
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                        <div class="system-status">
+
+                            <div class="system-row">
+
+                                <span>
+                                    Website
+                                </span>
+
+                                <strong class="online">
+                                    ● Online
+                                </strong>
+
+                            </div>
+
+                            <div class="system-row">
+
+                                <span>
+                                    Supabase
+                                </span>
+
+                                <strong
+                                    id="supabaseStatus"
+                                    class="online"
+                                >
+                                    ● Connected
+                                </strong>
+
+                            </div>
+
+                            <div class="system-row">
+
+                                <span>
+                                    Authentication
+                                </span>
+
+                                <strong class="online">
+                                    ● Active
+                                </strong>
+
+                            </div>
+
+                            <div class="system-row">
+
+                                <span>
+                                    Database
+                                </span>
+
+                                <strong class="online">
+                                    ● Online
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+
+            <footer class="footer">
+
+                ©
+                <span id="currentYear"></span>
+                Aman Global International Services.
+                All rights reserved.
+
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     CLIENT MODAL
+====================================================== -->
+
+<div
+    class="modal"
+    id="clientModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3 id="clientModalTitle">
+                Add New Client
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeClientModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="clientForm">
+
+            <div class="modal-body">
+
+                <input
+                    type="hidden"
+                    id="clientId"
+                >
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Client Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientName"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Email *
+                        </label>
+
+                        <input
+                            type="email"
+                            id="clientEmail"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Company
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientCompany"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Country
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientCountry"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Service
+                        </label>
+
+                        <select id="clientService">
+
+                            <option value="">
+                                Select Service
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="clientStatus">
+
+                            <option value="active">
+                                Active
+                            </option>
+
+                            <option value="inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group full">
+
+                        <label>
+                            Project Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientProject"
+                        >
+
+                    </div>
+
+                    <div class="form-group full">
+
+                        <label>
+                            Notes
+                        </label>
+
+                        <textarea
+                            id="clientNotes"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="clientModalMessage"
+                    class="modal-message"
+                ></div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeClientModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                    id="clientSaveButton"
+                >
+                    Save Client
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CLIENT DETAILS
+====================================================== -->
+
+<div
+    class="modal"
+    id="clientDetailsModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3>
+                Client Details
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeClientDetailsModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="clientDetailsContent"
+            class="info-grid"
+        ></div>
+
+        <div class="modal-footer">
+
+            <button
+                class="cancel-btn"
+                onclick="closeClientDetailsModal()"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LEAD DETAILS
+====================================================== -->
+
+<div
+    class="modal"
+    id="leadModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3>
+                Lead Details
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeLeadModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="leadDetailsContent"
+            class="info-grid"
+        ></div>
+
+        <div class="modal-footer">
+
+            <button
+                class="cancel-btn"
+                onclick="closeLeadModal()"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SERVICE MODAL
+====================================================== -->
+
+<div
+    class="modal"
+    id="serviceModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3 id="serviceModalTitle">
+                Add New Service
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeServiceModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="serviceForm">
+
+            <div class="modal-body">
+
+                <input
+                    type="hidden"
+                    id="serviceId"
+                >
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Service Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="serviceName"
+                            required
+                            placeholder="AI Solutions"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Slug *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="serviceSlug"
+                            required
+                            placeholder="ai-solutions"
+                        >
+
+                    </div>
+
+                    <div class="form-group full">
+
+                        <label>
+                            Short Description
+                        </label>
+
+                        <input
+                            type="text"
+                            id="serviceShortDescription"
+                            placeholder="Short service description"
+                        >
+
+                    </div>
+
+                    <div class="form-group full">
+
+                        <label>
+                            Full Description
+                        </label>
+
+                        <textarea
+                            id="serviceDescription"
+                            placeholder="Complete service description..."
+                        ></textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="serviceStatus">
+
+                            <option value="active">
+                                Active
+                            </option>
+
+                            <option value="inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Display Order
+                        </label>
+
+                        <input
+                            type="number"
+                            id="serviceDisplayOrder"
+                            value="1"
+                            min="0"
+                        >
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="serviceModalMessage"
+                    class="modal-message"
+                ></div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeServiceModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                    id="serviceSaveButton"
+                >
+                    Save Service
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SERVICE DETAILS
+====================================================== -->
+
+<div
+    class="modal"
+    id="serviceDetailsModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3>
+                Service Details
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeServiceDetailsModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="serviceDetailsContent"
+            class="info-grid"
+        ></div>
+
+        <div class="modal-footer">
+
+            <button
+                class="cancel-btn"
+                onclick="closeServiceDetailsModal()"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INDUSTRY MODAL
+====================================================== -->
+
+<div
+    class="modal"
+    id="industryModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3 id="industryModalTitle">
+                Add New Industry
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeIndustryModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="industryForm">
+
+            <div class="modal-body">
+
+                <input
+                    type="hidden"
+                    id="industryId"
+                >
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Industry Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="industryName"
+                            required
+                            placeholder="Finance & Accounting"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Slug *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="industrySlug"
+                            required
+                            placeholder="finance-accounting"
+                        >
+
+                    </div>
+
+                    <div class="form-group full">
+
+                        <label>
+                            Short Description
+                        </label>
+
+                        <input
+                            type="text"
+                            id="industryShortDescription"
+                            placeholder="Short industry description"
+                        >
+
+                    </div>
+
+                    <div class="form-group full">
+
+                        <label>
+                            Full Description
+                        </label>
+
+                        <textarea
+                            id="industryDescription"
+                            placeholder="Complete industry description..."
+                        ></textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="industryStatus">
+
+                            <option value="active">
+                                Active
+                            </option>
+
+                            <option value="inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Display Order
+                        </label>
+
+                        <input
+                            type="number"
+                            id="industryDisplayOrder"
+                            value="1"
+                            min="0"
+                        >
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="industryModalMessage"
+                    class="modal-message"
+                ></div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeIndustryModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                    id="industrySaveButton"
+                >
+                    Save Industry
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INDUSTRY DETAILS
+====================================================== -->
+
+<div
+    class="modal"
+    id="industryDetailsModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3>
+                Industry Details
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeIndustryDetailsModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="industryDetailsContent"
+            class="info-grid"
+        ></div>
+
+        <div class="modal-footer">
+
+            <button
+                class="cancel-btn"
+                onclick="closeIndustryDetailsModal()"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       SUPABASE
+    ====================================================== */
+
+    const SUPABASE_URL =
+        "https://oqazlpipfjsrptfpxdtu.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_Njj9rLGD-r9MRmGkVq8wrg_ZP2hb7Oi";
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+
+    /* =====================================================
+       HELPERS
+    ====================================================== */
+
+    function escapeHTML(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function formatDate(dateValue) {
+
+        if (!dateValue) {
+            return "-";
+        }
+
+        const date =
+            new Date(dateValue);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return "-";
+        }
+
+        return date.toLocaleDateString(
+            "en-US",
+            {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            }
+        );
+
+    }
+
+
+    function showError(
+        elementId,
+        message
+    ) {
+
+        const element =
+            document.getElementById(
+                elementId
+            );
+
+        if (!element) {
+            return;
+        }
+
+        element.textContent =
+            message;
+
+        element.style.display =
+            "block";
+
+    }
+
+
+    function hideError(
+        elementId
+    ) {
+
+        const element =
+            document.getElementById(
+                elementId
+            );
+
+        if (!element) {
+            return;
+        }
+
+        element.textContent = "";
+
+        element.style.display =
+            "none";
+
+    }
+
+
+    function showModalMessage(
+        elementId,
+        message,
+        type
+    ) {
+
+        const element =
+            document.getElementById(
+                elementId
+            );
+
+        if (!element) {
+            return;
+        }
+
+        element.textContent =
+            message;
+
+        element.className =
+            "modal-message " +
+            type;
+
+    }
+
+
+    /* =====================================================
+       AUTH CHECK
+    ====================================================== */
+
+    async function checkAdminLogin() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.getSession();
+
+        if (error) {
+
+            console.error(
+                "Session error:",
+                error
+            );
+
+            window.location.href =
+                "./login.html";
+
+            return false;
+
+        }
+
+        if (!data.session) {
+
+            window.location.href =
+                "./login.html";
+
+            return false;
+
+        }
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       LOGOUT
+    ====================================================== */
+
+    async function logoutAdmin() {
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+        window.location.href =
+            "./login.html";
+
+    }
+
+
+    /* =====================================================
+       LEADS
+    ====================================================== */
+
+    async function loadLeads() {
+
+        hideError("leadError");
+
+        const container =
+            document.getElementById(
+                "leadContainer"
+            );
+
+        container.innerHTML =
+            '<div class="loading">Loading leads...</div>';
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("leads")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "Leads error:",
+                error
+            );
+
+            showError(
+                "leadError",
+                "Unable to load leads: " +
+                error.message
+            );
+
+            container.innerHTML = "";
+
+            return;
+
+        }
+
+        const leads =
+            data || [];
+
+        document.getElementById(
+            "totalLeads"
+        ).textContent =
+            leads.length;
+
+        const newLeadCount =
+            leads.filter(
+                lead =>
+                    lead.status === "new"
+            ).length;
+
+        document.getElementById(
+            "newLeads"
+        ).textContent =
+            newLeadCount;
+
+        if (!leads.length) {
+
+            container.innerHTML =
+                '<div class="empty">No leads found.</div>';
+
+            return;
+
+        }
+
+        const recentLeads =
+            leads.slice(
+                0,
+                10
+            );
+
+        let html = `
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Company</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+        `;
+
+        recentLeads.forEach(
+            lead => {
+
+                const encoded =
+                    encodeURIComponent(
+                        JSON.stringify(
+                            lead
+                        )
+                    );
+
+                const status =
+                    lead.status ||
+                    "new";
+
+                html += `
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${escapeHTML(
+                                    lead.name
+                                )}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                lead.company ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                lead.service ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status status-new"
+                            >
+                                ${escapeHTML(
+                                    status
+                                )}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${formatDate(
+                                lead.created_at
+                            )}
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="small-btn"
+                                onclick="openLeadDetailsEncoded('${encoded}')"
+                            >
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+        html += `
+
+                </tbody>
+
+            </table>
+
+        `;
+
+        container.innerHTML =
+            html;
+
+    }
+
+
+    /* =====================================================
+       LEAD DETAILS
+    ====================================================== */
+
+    function openLeadDetailsEncoded(
+        encoded
+    ) {
+
+        const lead =
+            JSON.parse(
+                decodeURIComponent(
+                    encoded
+                )
+            );
+
+        document.getElementById(
+            "leadDetailsContent"
+        ).innerHTML = `
+
+            <div class="info-box">
+                <small>Name</small>
+                <strong>
+                    ${escapeHTML(
+                        lead.name
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Email</small>
+                <strong>
+                    ${escapeHTML(
+                        lead.email
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Company</small>
+                <strong>
+                    ${escapeHTML(
+                        lead.company ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Country</small>
+                <strong>
+                    ${escapeHTML(
+                        lead.country ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Service</small>
+                <strong>
+                    ${escapeHTML(
+                        lead.service ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Budget</small>
+                <strong>
+                    ${escapeHTML(
+                        lead.budget ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Status</small>
+                <strong>
+                    ${escapeHTML(
+                        lead.status ||
+                        "new"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Date</small>
+                <strong>
+                    ${formatDate(
+                        lead.created_at
+                    )}
+                </strong>
+            </div>
+
+            <div
+                class="info-box"
+                style="grid-column:1/-1;"
+            >
+
+                <small>
+                    Project Details
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        lead.project_details ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+        `;
+
+        document.getElementById(
+            "leadModal"
+        ).classList.add(
+            "show"
+        );
+
+    }
+
+
+    function closeLeadModal() {
+
+        document.getElementById(
+            "leadModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       CLIENTS
+    ====================================================== */
+
+    async function loadClients() {
+
+        hideError("clientError");
+
+        const container =
+            document.getElementById(
+                "clientContainer"
+            );
+
+        container.innerHTML =
+            '<div class="loading">Loading clients...</div>';
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("clients")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "Clients error:",
+                error
+            );
+
+            showError(
+                "clientError",
+                "Unable to load clients: " +
+                error.message
+            );
+
+            container.innerHTML = "";
+
+            return;
+
+        }
+
+        const clients =
+            data || [];
+
+        if (!clients.length) {
+
+            container.innerHTML =
+                '<div class="empty">No clients found.</div>';
+
+            return;
+
+        }
+
+        let html = `
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Client</th>
+                        <th>Company</th>
+                        <th>Country</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+        `;
+
+        clients.forEach(
+            client => {
+
+                const encoded =
+                    encodeURIComponent(
+                        JSON.stringify(
+                            client
+                        )
+                    );
+
+                const status =
+                    client.status ||
+                    "active";
+
+                html += `
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${escapeHTML(
+                                    client.client_name
+                                )}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                client.company ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                client.country ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                client.service ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status ${
+                                    status === "active"
+                                    ? "status-active"
+                                    : "status-inactive"
+                                }"
+                            >
+                                ${escapeHTML(
+                                    status
+                                )}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="small-btn"
+                                onclick="openClientDetailsEncoded('${encoded}')"
+                            >
+                                View
+                            </button>
+
+                            <button
+                                class="small-btn"
+                                onclick="editClientEncoded('${encoded}')"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="danger-btn"
+                                onclick="deleteClient(${client.id})"
+                            >
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+        html += `
+
+                </tbody>
+
+            </table>
+
+        `;
+
+        container.innerHTML =
+            html;
+
+    }
+
+
+    /* =====================================================
+       ACTIVE CLIENT COUNT
+    ====================================================== */
+
+    async function loadActiveClients() {
+
+        const {
+            count,
+            error
+        } =
+            await supabaseClient
+                .from("clients")
+                .select(
+                    "*",
+                    {
+                        count: "exact",
+                        head: true
+                    }
+                )
+                .eq(
+                    "status",
+                    "active"
+                );
+
+        if (error) {
+
+            console.error(
+                "Active clients error:",
+                error
+            );
+
+            return;
+
+        }
+
+        document.getElementById(
+            "activeClients"
+        ).textContent =
+            count || 0;
+
+    }
+
+
+    /* =====================================================
+       CLIENT MODAL
+    ====================================================== */
+
+    function openClientModal(
+        client = null
+    ) {
+
+        document.getElementById(
+            "clientModal"
+        ).classList.add(
+            "show"
+        );
+
+        document.getElementById(
+            "clientModalMessage"
+        ).className =
+            "modal-message";
+
+        if (!client) {
+
+            document.getElementById(
+                "clientModalTitle"
+            ).textContent =
+                "Add New Client";
+
+            document.getElementById(
+                "clientForm"
+            ).reset();
+
+            document.getElementById(
+                "clientId"
+            ).value = "";
+
+            document.getElementById(
+                "clientStatus"
+            ).value =
+                "active";
+
+            loadServiceOptions();
+
+            return;
+
+        }
+
+        document.getElementById(
+            "clientModalTitle"
+        ).textContent =
+            "Edit Client";
+
+        document.getElementById(
+            "clientId"
+        ).value =
+            client.id;
+
+        document.getElementById(
+            "clientName"
+        ).value =
+            client.client_name ||
+            "";
+
+        document.getElementById(
+            "clientEmail"
+        ).value =
+            client.email ||
+            "";
+
+        document.getElementById(
+            "clientCompany"
+        ).value =
+            client.company ||
+            "";
+
+        document.getElementById(
+            "clientCountry"
+        ).value =
+            client.country ||
+            "";
+
+        document.getElementById(
+            "clientService"
+        ).value =
+            client.service ||
+            "";
+
+        document.getElementById(
+            "clientStatus"
+        ).value =
+            client.status ||
+            "active";
+
+        document.getElementById(
+            "clientProject"
+        ).value =
+            client.project_name ||
+            "";
+
+        document.getElementById(
+            "clientNotes"
+        ).value =
+            client.notes ||
+            "";
+
+        loadServiceOptions(
+            client.service ||
+            ""
+        );
+
+    }
+
+
+    function closeClientModal() {
+
+        document.getElementById(
+            "clientModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       CLIENT SERVICE OPTIONS
+    ====================================================== */
+
+    async function loadServiceOptions(
+        selectedService = ""
+    ) {
+
+        const select =
+            document.getElementById(
+                "clientService"
+            );
+
+        if (!select) {
+            return;
+        }
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("services")
+                .select(
+                    "service_name"
+                )
+                .eq(
+                    "status",
+                    "active"
+                )
+                .order(
+                    "display_order",
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "Service options error:",
+                error
+            );
+
+            return;
+
+        }
+
+        let options = `
+
+            <option value="">
+                Select Service
+            </option>
+
+        `;
+
+        const names = [];
+
+        (data || []).forEach(
+            service => {
+
+                names.push(
+                    service.service_name
+                );
+
+                options += `
+
+                    <option
+                        value="${escapeHTML(
+                            service.service_name
+                        )}"
+                    >
+                        ${escapeHTML(
+                            service.service_name
+                        )}
+                    </option>
+
+                `;
+
+            }
+        );
+
+        if (
+            selectedService &&
+            !names.includes(
+                selectedService
+            )
+        ) {
+
+            options += `
+
+                <option
+                    value="${escapeHTML(
+                        selectedService
+                    )}"
+                >
+                    ${escapeHTML(
+                        selectedService
+                    )} (Current)
+                </option>
+
+            `;
+
+        }
+
+        select.innerHTML =
+            options;
+
+        select.value =
+            selectedService;
+
+    }
+
+
+    /* =====================================================
+       CLIENT SAVE
+    ====================================================== */
+
+    document.getElementById(
+        "clientForm"
+    ).addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const saveButton =
+                document.getElementById(
+                    "clientSaveButton"
+                );
+
+            saveButton.disabled =
+                true;
+
+            saveButton.textContent =
+                "Saving...";
+
+            const clientId =
+                document.getElementById(
+                    "clientId"
+                ).value;
+
+            const clientData = {
+
+                client_name:
+                    document.getElementById(
+                        "clientName"
+                    ).value.trim(),
+
+                email:
+                    document.getElementById(
+                        "clientEmail"
+                    ).value.trim(),
+
+                company:
+                    document.getElementById(
+                        "clientCompany"
+                    ).value.trim(),
+
+                country:
+                    document.getElementById(
+                        "clientCountry"
+                    ).value.trim(),
+
+                service:
+                    document.getElementById(
+                        "clientService"
+                    ).value,
+
+                project_name:
+                    document.getElementById(
+                        "clientProject"
+                    ).value.trim(),
+
+                status:
+                    document.getElementById(
+                        "clientStatus"
+                    ).value,
+
+                notes:
+                    document.getElementById(
+                        "clientNotes"
+                    ).value.trim()
+
+            };
+
+            let result;
+
+            if (clientId) {
+
+                result =
+                    await supabaseClient
+                        .from("clients")
+                        .update(
+                            clientData
+                        )
+                        .eq(
+                            "id",
+                            clientId
+                        );
+
+            } else {
+
+                result =
+                    await supabaseClient
+                        .from("clients")
+                        .insert([
+                            clientData
+                        ]);
+
+            }
+
+            if (result.error) {
+
+                console.error(
+                    "Client save error:",
+                    result.error
+                );
+
+                showModalMessage(
+                    "clientModalMessage",
+                    result.error.message,
+                    "error"
+                );
+
+                saveButton.disabled =
+                    false;
+
+                saveButton.textContent =
+                    "Save Client";
+
+                return;
+
+            }
+
+            showModalMessage(
+                "clientModalMessage",
+                clientId
+                    ? "Client updated successfully."
+                    : "Client added successfully.",
+                "success"
+            );
+
+            await loadClients();
+
+            await loadActiveClients();
+
+            setTimeout(
+                () => {
+                    closeClientModal();
+                },
+                600
+            );
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save Client";
+
+        }
+    );
+
+
+    /* =====================================================
+       EDIT CLIENT
+    ====================================================== */
+
+    function editClientEncoded(
+        encoded
+    ) {
+
+        const client =
+            JSON.parse(
+                decodeURIComponent(
+                    encoded
+                )
+            );
+
+        openClientModal(
+            client
+        );
+
+    }
+
+
+    /* =====================================================
+       CLIENT DETAILS
+    ====================================================== */
+
+    function openClientDetailsEncoded(
+        encoded
+    ) {
+
+        const client =
+            JSON.parse(
+                decodeURIComponent(
+                    encoded
+                )
+            );
+
+        document.getElementById(
+            "clientDetailsContent"
+        ).innerHTML = `
+
+            <div class="info-box">
+                <small>Client Name</small>
+                <strong>
+                    ${escapeHTML(
+                        client.client_name
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Email</small>
+                <strong>
+                    ${escapeHTML(
+                        client.email
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Company</small>
+                <strong>
+                    ${escapeHTML(
+                        client.company ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Country</small>
+                <strong>
+                    ${escapeHTML(
+                        client.country ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Service</small>
+                <strong>
+                    ${escapeHTML(
+                        client.service ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Project</small>
+                <strong>
+                    ${escapeHTML(
+                        client.project_name ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Status</small>
+                <strong>
+                    ${escapeHTML(
+                        client.status ||
+                        "-"
+                    )}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <small>Created</small>
+                <strong>
+                    ${formatDate(
+                        client.created_at
+                    )}
+                </strong>
+            </div>
+
+            <div
+                class="info-box"
+                style="grid-column:1/-1;"
+            >
+
+                <small>
+                    Notes
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        client.notes ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+        `;
+
+        document.getElementById(
+            "clientDetailsModal"
+        ).classList.add(
+            "show"
+        );
+
+    }
+
+
+    function closeClientDetailsModal() {
+
+        document.getElementById(
+            "clientDetailsModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       DELETE CLIENT
+    ====================================================== */
+
+    async function deleteClient(
+        clientId
+    ) {
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to delete this client?"
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("clients")
+                .delete()
+                .eq(
+                    "id",
+                    clientId
+                );
+
+        if (error) {
+
+            alert(
+                "Unable to delete client: " +
+                error.message
+            );
+
+            return;
+
+        }
+
+        await loadClients();
+
+        await loadActiveClients();
+
+    }
+
+
+    /* =====================================================
+       SERVICES
+    ====================================================== */
+
+    async function loadServices() {
+
+        hideError(
+            "serviceError"
+        );
+
+        const container =
+            document.getElementById(
+                "serviceContainer"
+            );
+
+        container.innerHTML =
+            '<div class="loading">Loading services...</div>';
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("services")
+                .select("*")
+                .order(
+                    "display_order",
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "Services error:",
+                error
+            );
+
+            showError(
+                "serviceError",
+                "Unable to load services: " +
+                error.message
+            );
+
+            container.innerHTML =
+                "";
+
+            return;
+
+        }
+
+        const services =
+            data || [];
+
+        document.getElementById(
+            "totalServices"
+        ).textContent =
+            services.length;
+
+        if (!services.length) {
+
+            container.innerHTML =
+                '<div class="empty">No services found.</div>';
+
+            await loadServiceOptions();
+
+            return;
+
+        }
+
+        let html = `
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Service</th>
+                        <th>Slug</th>
+                        <th>Short Description</th>
+                        <th>Status</th>
+                        <th>Order</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+        `;
+
+        services.forEach(
+            service => {
+
+                const encoded =
+                    encodeURIComponent(
+                        JSON.stringify(
+                            service
+                        )
+                    );
+
+                const status =
+                    service.status ||
+                    "active";
+
+                html += `
+
+                    <tr>
+
+                        <td>
+
+                            <div class="service-name">
+                                ${escapeHTML(
+                                    service.service_name
+                                )}
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="slug">
+                                ${escapeHTML(
+                                    service.slug
+                                )}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="description-text">
+                                ${escapeHTML(
+                                    service.short_description ||
+                                    "-"
+                                )}
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status ${
+                                    status === "active"
+                                    ? "status-active"
+                                    : "status-inactive"
+                                }"
+                            >
+                                ${escapeHTML(
+                                    status
+                                )}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${Number(
+                                service.display_order ||
+                                0
+                            )}
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="small-btn"
+                                onclick="openServiceDetailsEncoded('${encoded}')"
+                            >
+                                View
+                            </button>
+
+                            <button
+                                class="small-btn"
+                                onclick="editServiceEncoded('${encoded}')"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="danger-btn"
+                                onclick="deleteService(${service.id})"
+                            >
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+        html += `
+
+                </tbody>
+
+            </table>
+
+        `;
+
+        container.innerHTML =
+            html;
+
+        await loadServiceOptions();
+
+    }
+
+
+    /* =====================================================
+       SERVICE MODAL
+    ====================================================== */
+
+    function openServiceModal(
+        service = null
+    ) {
+
+        document.getElementById(
+            "serviceModal"
+        ).classList.add(
+            "show"
+        );
+
+        document.getElementById(
+            "serviceModalMessage"
+        ).className =
+            "modal-message";
+
+        if (!service) {
+
+            document.getElementById(
+                "serviceModalTitle"
+            ).textContent =
+                "Add New Service";
+
+            document.getElementById(
+                "serviceForm"
+            ).reset();
+
+            document.getElementById(
+                "serviceId"
+            ).value = "";
+
+            document.getElementById(
+                "serviceStatus"
+            ).value =
+                "active";
+
+            document.getElementById(
+                "serviceDisplayOrder"
+            ).value =
+                "1";
+
+            return;
+
+        }
+
+        document.getElementById(
+            "serviceModalTitle"
+        ).textContent =
+            "Edit Service";
+
+        document.getElementById(
+            "serviceId"
+        ).value =
+            service.id;
+
+        document.getElementById(
+            "serviceName"
+        ).value =
+            service.service_name ||
+            "";
+
+        document.getElementById(
+            "serviceSlug"
+        ).value =
+            service.slug ||
+            "";
+
+        document.getElementById(
+            "serviceShortDescription"
+        ).value =
+            service.short_description ||
+            "";
+
+        document.getElementById(
+            "serviceDescription"
+        ).value =
+            service.description ||
+            "";
+
+        document.getElementById(
+            "serviceStatus"
+        ).value =
+            service.status ||
+            "active";
+
+        document.getElementById(
+            "serviceDisplayOrder"
+        ).value =
+            service.display_order ||
+            0;
+
+    }
+
+
+    function closeServiceModal() {
+
+        document.getElementById(
+            "serviceModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       SERVICE FORM
+    ====================================================== */
+
+    document.getElementById(
+        "serviceForm"
+    ).addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const saveButton =
+                document.getElementById(
+                    "serviceSaveButton"
+                );
+
+            saveButton.disabled =
+                true;
+
+            saveButton.textContent =
+                "Saving...";
+
+            const serviceId =
+                document.getElementById(
+                    "serviceId"
+                ).value;
+
+            const serviceData = {
+
+                service_name:
+                    document.getElementById(
+                        "serviceName"
+                    ).value.trim(),
+
+                slug:
+                    document.getElementById(
+                        "serviceSlug"
+                    ).value.trim(),
+
+                short_description:
+                    document.getElementById(
+                        "serviceShortDescription"
+                    ).value.trim(),
+
+                description:
+                    document.getElementById(
+                        "serviceDescription"
+                    ).value.trim(),
+
+                status:
+                    document.getElementById(
+                        "serviceStatus"
+                    ).value,
+
+                display_order:
+                    Number(
+                        document.getElementById(
+                            "serviceDisplayOrder"
+                        ).value
+                    ) || 0
+
+            };
+
+            let result;
+
+            if (serviceId) {
+
+                result =
+                    await supabaseClient
+                        .from("services")
+                        .update(
+                            serviceData
+                        )
+                        .eq(
+                            "id",
+                            serviceId
+                        );
+
+            } else {
+
+                result =
+                    await supabaseClient
+                        .from("services")
+                        .insert([
+                            serviceData
+                        ]);
+
+            }
+
+            if (result.error) {
+
+                console.error(
+                    "Service save error:",
+                    result.error
+                );
+
+                showModalMessage(
+                    "serviceModalMessage",
+                    result.error.message,
+                    "error"
+                );
+
+                saveButton.disabled =
+                    false;
+
+                saveButton.textContent =
+                    "Save Service";
+
+                return;
+
+            }
+
+            showModalMessage(
+                "serviceModalMessage",
+                serviceId
+                    ? "Service updated successfully."
+                    : "Service created successfully.",
+                "success"
+            );
+
+            await loadServices();
+
+            setTimeout(
+                () => {
+                    closeServiceModal();
+                },
+                600
+            );
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save Service";
+
+        }
+    );
+
+
+    /* =====================================================
+       EDIT SERVICE
+    ====================================================== */
+
+    function editServiceEncoded(
+        encoded
+    ) {
+
+        const service =
+            JSON.parse(
+                decodeURIComponent(
+                    encoded
+                )
+            );
+
+        openServiceModal(
+            service
+        );
+
+    }
+
+
+    /* =====================================================
+       SERVICE DETAILS
+    ====================================================== */
+
+    function openServiceDetailsEncoded(
+        encoded
+    ) {
+
+        const service =
+            JSON.parse(
+                decodeURIComponent(
+                    encoded
+                )
+            );
+
+        document.getElementById(
+            "serviceDetailsContent"
+        ).innerHTML = `
+
+            <div class="info-box">
+
+                <small>
+                    Service Name
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        service.service_name
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Slug
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        service.slug
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Status
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        service.status ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Display Order
+                </small>
+
+                <strong>
+                    ${Number(
+                        service.display_order ||
+                        0
+                    )}
+                </strong>
+
+            </div>
+
+            <div
+                class="info-box"
+                style="grid-column:1/-1;"
+            >
+
+                <small>
+                    Short Description
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        service.short_description ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+            <div
+                class="info-box"
+                style="grid-column:1/-1;"
+            >
+
+                <small>
+                    Full Description
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        service.description ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Created
+                </small>
+
+                <strong>
+                    ${formatDate(
+                        service.created_at
+                    )}
+                </strong>
+
+            </div>
+
+        `;
+
+        document.getElementById(
+            "serviceDetailsModal"
+        ).classList.add(
+            "show"
+        );
+
+    }
+
+
+    function closeServiceDetailsModal() {
+
+        document.getElementById(
+            "serviceDetailsModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       DELETE SERVICE
+    ====================================================== */
+
+    async function deleteService(
+        serviceId
+    ) {
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to delete this service?"
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("services")
+                .delete()
+                .eq(
+                    "id",
+                    serviceId
+                );
+
+        if (error) {
+
+            alert(
+                "Unable to delete service: " +
+                error.message
+            );
+
+            return;
+
+        }
+
+        await loadServices();
+
+    }
+
+
+    /* =====================================================
+       INDUSTRIES
+    ====================================================== */
+
+    async function loadIndustries() {
+
+        hideError(
+            "industryError"
+        );
+
+        const container =
+            document.getElementById(
+                "industryContainer"
+            );
+
+        container.innerHTML =
+            '<div class="loading">Loading industries...</div>';
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("industries")
+                .select("*")
+                .order(
+                    "display_order",
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "Industries error:",
+                error
+            );
+
+            showError(
+                "industryError",
+                "Unable to load industries: " +
+                error.message
+            );
+
+            container.innerHTML =
+                "";
+
+            return;
+
+        }
+
+        const industries =
+            data || [];
+
+        document.getElementById(
+            "totalIndustries"
+        ).textContent =
+            industries.length;
+
+        if (!industries.length) {
+
+            container.innerHTML =
+                '<div class="empty">No industries found.</div>';
+
+            return;
+
+        }
+
+        let html = `
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Industry
+                        </th>
+
+                        <th>
+                            Slug
+                        </th>
+
+                        <th>
+                            Short Description
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Order
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+        `;
+
+        industries.forEach(
+            industry => {
+
+                const encoded =
+                    encodeURIComponent(
+                        JSON.stringify(
+                            industry
+                        )
+                    );
+
+                const status =
+                    industry.status ||
+                    "active";
+
+                html += `
+
+                    <tr>
+
+                        <td>
+
+                            <div class="service-name">
+                                ${escapeHTML(
+                                    industry.industry_name
+                                )}
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="slug">
+                                ${escapeHTML(
+                                    industry.slug
+                                )}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="description-text">
+                                ${escapeHTML(
+                                    industry.short_description ||
+                                    "-"
+                                )}
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status ${
+                                    status === "active"
+                                    ? "status-active"
+                                    : "status-inactive"
+                                }"
+                            >
+                                ${escapeHTML(
+                                    status
+                                )}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${Number(
+                                industry.display_order ||
+                                0
+                            )}
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="small-btn"
+                                onclick="openIndustryDetailsEncoded('${encoded}')"
+                            >
+                                View
+                            </button>
+
+                            <button
+                                class="small-btn"
+                                onclick="editIndustryEncoded('${encoded}')"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="danger-btn"
+                                onclick="deleteIndustry(${industry.id})"
+                            >
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+        html += `
+
+                </tbody>
+
+            </table>
+
+        `;
+
+        container.innerHTML =
+            html;
+
+    }
+
+
+    /* =====================================================
+       INDUSTRY MODAL
+    ====================================================== */
+
+    function openIndustryModal(
+        industry = null
+    ) {
+
+        document.getElementById(
+            "industryModal"
+        ).classList.add(
+            "show"
+        );
+
+        document.getElementById(
+            "industryModalMessage"
+        ).className =
+            "modal-message";
+
+        if (!industry) {
+
+            document.getElementById(
+                "industryModalTitle"
+            ).textContent =
+                "Add New Industry";
+
+            document.getElementById(
+                "industryForm"
+            ).reset();
+
+            document.getElementById(
+                "industryId"
+            ).value = "";
+
+            document.getElementById(
+                "industryStatus"
+            ).value =
+                "active";
+
+            document.getElementById(
+                "industryDisplayOrder"
+            ).value =
+                "1";
+
+            return;
+
+        }
+
+        document.getElementById(
+            "industryModalTitle"
+        ).textContent =
+            "Edit Industry";
+
+        document.getElementById(
+            "industryId"
+        ).value =
+            industry.id;
+
+        document.getElementById(
+            "industryName"
+        ).value =
+            industry.industry_name ||
+            "";
+
+        document.getElementById(
+            "industrySlug"
+        ).value =
+            industry.slug ||
+            "";
+
+        document.getElementById(
+            "industryShortDescription"
+        ).value =
+            industry.short_description ||
+            "";
+
+        document.getElementById(
+            "industryDescription"
+        ).value =
+            industry.description ||
+            "";
+
+        document.getElementById(
+            "industryStatus"
+        ).value =
+            industry.status ||
+            "active";
+
+        document.getElementById(
+            "industryDisplayOrder"
+        ).value =
+            industry.display_order ||
+            0;
+
+    }
+
+
+    function closeIndustryModal() {
+
+        document.getElementById(
+            "industryModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       INDUSTRY FORM
+    ====================================================== */
+
+    document.getElementById(
+        "industryForm"
+    ).addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const saveButton =
+                document.getElementById(
+                    "industrySaveButton"
+                );
+
+            saveButton.disabled =
+                true;
+
+            saveButton.textContent =
+                "Saving...";
+
+            const industryId =
+                document.getElementById(
+                    "industryId"
+                ).value;
+
+            const industryData = {
+
+                industry_name:
+                    document.getElementById(
+                        "industryName"
+                    ).value.trim(),
+
+                slug:
+                    document.getElementById(
+                        "industrySlug"
+                    ).value.trim(),
+
+                short_description:
+                    document.getElementById(
+                        "industryShortDescription"
+                    ).value.trim(),
+
+                description:
+                    document.getElementById(
+                        "industryDescription"
+                    ).value.trim(),
+
+                status:
+                    document.getElementById(
+                        "industryStatus"
+                    ).value,
+
+                display_order:
+                    Number(
+                        document.getElementById(
+                            "industryDisplayOrder"
+                        ).value
+                    ) || 0
+
+            };
+
+            let result;
+
+            if (industryId) {
+
+                result =
+                    await supabaseClient
+                        .from("industries")
+                        .update(
+                            industryData
+                        )
+                        .eq(
+                            "id",
+                            industryId
+                        );
+
+            } else {
+
+                result =
+                    await supabaseClient
+                        .from("industries")
+                        .insert([
+                            industryData
+                        ]);
+
+            }
+
+            if (result.error) {
+
+                console.error(
+                    "Industry save error:",
+                    result.error
+                );
+
+                showModalMessage(
+                    "industryModalMessage",
+                    result.error.message,
+                    "error"
+                );
+
+                saveButton.disabled =
+                    false;
+
+                saveButton.textContent =
+                    "Save Industry";
+
+                return;
+
+            }
+
+            showModalMessage(
+                "industryModalMessage",
+                industryId
+                    ? "Industry updated successfully."
+                    : "Industry created successfully.",
+                "success"
+            );
+
+            await loadIndustries();
+
+            setTimeout(
+                () => {
+                    closeIndustryModal();
+                },
+                600
+            );
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save Industry";
+
+        }
+    );
+
+
+    /* =====================================================
+       EDIT INDUSTRY
+    ====================================================== */
+
+    function editIndustryEncoded(
+        encoded
+    ) {
+
+        const industry =
+            JSON.parse(
+                decodeURIComponent(
+                    encoded
+                )
+            );
+
+        openIndustryModal(
+            industry
+        );
+
+    }
+
+
+    /* =====================================================
+       INDUSTRY DETAILS
+    ====================================================== */
+
+    function openIndustryDetailsEncoded(
+        encoded
+    ) {
+
+        const industry =
+            JSON.parse(
+                decodeURIComponent(
+                    encoded
+                )
+            );
+
+        document.getElementById(
+            "industryDetailsContent"
+        ).innerHTML = `
+
+            <div class="info-box">
+
+                <small>
+                    Industry Name
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        industry.industry_name
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Slug
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        industry.slug
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Status
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        industry.status ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Display Order
+                </small>
+
+                <strong>
+                    ${Number(
+                        industry.display_order ||
+                        0
+                    )}
+                </strong>
+
+            </div>
+
+            <div
+                class="info-box"
+                style="grid-column:1/-1;"
+            >
+
+                <small>
+                    Short Description
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        industry.short_description ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+            <div
+                class="info-box"
+                style="grid-column:1/-1;"
+            >
+
+                <small>
+                    Full Description
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        industry.description ||
+                        "-"
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Created
+                </small>
+
+                <strong>
+                    ${formatDate(
+                        industry.created_at
+                    )}
+                </strong>
+
+            </div>
+
+        `;
+
+        document.getElementById(
+            "industryDetailsModal"
+        ).classList.add(
+            "show"
+        );
+
+    }
+
+
+    function closeIndustryDetailsModal() {
+
+        document.getElementById(
+            "industryDetailsModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       DELETE INDUSTRY
+    ====================================================== */
+
+    async function deleteIndustry(
+        industryId
+    ) {
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to delete this industry?"
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("industries")
+                .delete()
+                .eq(
+                    "id",
+                    industryId
+                );
+
+        if (error) {
+
+            alert(
+                "Unable to delete industry: " +
+                error.message
+            );
+
+            return;
+
+        }
+
+        await loadIndustries();
+
+    }
+
+
+    /* =====================================================
+       MODAL OUTSIDE CLICK
+    ====================================================== */
+
+    document.querySelectorAll(
+        ".modal"
+    ).forEach(
+        modal => {
+
+            modal.addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target === modal
+                    ) {
+
+                        modal.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIALIZE DASHBOARD
+    ====================================================== */
+
+    async function initializeDashboard() {
+
+        const loggedIn =
+            await checkAdminLogin();
+
+        if (!loggedIn) {
+            return;
+        }
+
+        document.getElementById(
+            "currentYear"
+        ).textContent =
+            new Date().getFullYear();
+
+        try {
+
+            await loadLeads();
+
+            await loadClients();
+
+            await loadServices();
+
+            await loadIndustries();
+
+            await loadActiveClients();
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard initialization error:",
+                error
+            );
+
+            document.getElementById(
+                "supabaseStatus"
+            ).textContent =
+                "● Error";
+
+            document.getElementById(
+                "supabaseStatus"
+            ).className = "";
+
+        }
+
+    }
+
+
+    initializeDashboard();
+
+</script>
+
+</body>
+</html>

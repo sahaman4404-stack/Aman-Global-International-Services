@@ -1,0 +1,53 @@
+{
+  "company": {
+    "name": "Aman Global International Services",
+    "shortName": "AGIS",
+    "tagline": "Global Business. Smarter with AI.",
+    "description": "A future-focused global services company providing AI, technology, finance, analytics, marketing and digital business solutions.",
+    "location": "Nepal",
+    "targetMarket": "Global",
+    "status": "Future Business Concept",
+    "email": "hello@amanglobal.com"
+  },
+
+  "vision": "To build a trusted global technology and professional services company from Nepal.",
+  
+  "mission": "To help businesses solve real-world problems through technology, artificial intelligence, professional services and data-driven solutions.",
+
+  "coreValues": [
+    "Innovation",
+    "Integrity",
+    "Quality",
+    "Transparency",
+    "Client Success",
+    "Global Thinking"
+  ],
+
+  "process": [
+    {
+      "step": 1,
+      "name": "Discover",
+      "description": "Understand the client's business, goals and challenges."
+    },
+    {
+      "step": 2,
+      "name": "Diagnose",
+      "description": "Identify problems, opportunities and areas for improvement."
+    },
+    {
+      "step": 3,
+      "name": "Design",
+      "description": "Create a practical and customized solution strategy."
+    },
+    {
+      "step": 4,
+      "name": "Automate",
+      "description": "Use technology and AI to improve efficiency and productivity."
+    },
+    {
+      "step": 5,
+      "name": "Measure",
+      "description": "Track performance and continuously improve the solution."
+    }
+  ]
+}

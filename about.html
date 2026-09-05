@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Aman Global International Services - Professional accounting, finance, auditing, AI, technology, analytics and digital business solutions."
+    >
+
+    <meta
+        name="keywords"
+        content="Aman Global International Services, AGIS, accounting, finance, auditing, AI, technology, web development, analytics, digital marketing"
+    >
+
+    <meta name="author" content="Aman Sah">
+
+    <title>About Us | Aman Global International Services</title>
+
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f6f8fc;
+            color: #172033;
+            line-height: 1.7;
+        }
+
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .about-header {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid #e7ebf2;
+        }
+
+
+        .header-container {
+            width: min(1180px, 92%);
+            min-height: 76px;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 30px;
+        }
+
+
+        .brand {
+            font-family: "Poppins", sans-serif;
+
+            font-size: 23px;
+            font-weight: 800;
+
+            color: #102a56;
+        }
+
+
+        .brand span {
+            color: #1769e0;
+        }
+
+
+        .navigation {
+            list-style: none;
+
+            display: flex;
+            align-items: center;
+
+            gap: 24px;
+        }
+
+
+        .navigation a {
+            color: #3c4759;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.3s ease;
+        }
+
+
+        .navigation a:hover,
+        .navigation a.active {
+            color: #1769e0;
+        }
+
+
+        .navigation .nav-button {
+            background: #1769e0;
+
+            color: #ffffff;
+
+            padding: 12px 19px;
+
+            border-radius: 9px;
+        }
+
+
+        .navigation .nav-button:hover {
+            background: #0d4fac;
+
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .about-hero {
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 110px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #071d3b 0%,
+                    #0d3970 50%,
+                    #1769e0 100%
+                );
+
+            color: #ffffff;
+        }
+
+
+        .about-hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.05);
+
+            top: -230px;
+            right: -100px;
+        }
+
+
+        .about-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.04);
+
+            bottom: -180px;
+            left: -100px;
+        }
+
+
+        .hero-container {
+            position: relative;
+            z-index: 2;
+
+            width: min(1050px, 92%);
+
+            margin: auto;
+
+            text-align: center;
+        }
+
+
+        .hero-label {
+            display: inline-block;
+
+            padding: 8px 17px;
+
+            margin-bottom: 20px;
+
+            border: 1px solid rgba(255,255,255,0.25);
+
+            border-radius: 50px;
+
+            background: rgba(255,255,255,0.08);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .about-hero h1 {
+            max-width: 950px;
+
+            margin: auto auto 25px;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: clamp(38px, 6vw, 66px);
+
+            font-weight: 800;
+
+            line-height: 1.1;
+        }
+
+
+        .about-hero h1 span {
+            color: #9fd2ff;
+        }
+
+
+        .about-hero p {
+            max-width: 760px;
+
+            margin: auto;
+
+            color: #dcecff;
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           GENERAL SECTION
+        ===================================================== */
+
+        .section {
+            padding: 95px 20px;
+        }
+
+
+        .container {
+            width: min(1150px, 92%);
+
+            margin: auto;
+        }
+
+
+        .section-heading {
+            max-width: 760px;
+
+            margin: 0 auto 60px;
+
+            text-align: center;
+        }
+
+
+        .section-heading span {
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #1769e0;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .section-heading h2 {
+            margin-bottom: 15px;
+
+            color: #102a56;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: clamp(30px, 4vw, 44px);
+
+            font-weight: 800;
+
+            line-height: 1.2;
+        }
+
+
+        .section-heading p {
+            color: #667085;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           FOUNDER
+        ===================================================== */
+
+        .founder-section {
+            background: #ffffff;
+        }
+
+
+        .founder-grid {
+            display: grid;
+
+            grid-template-columns: 430px 1fr;
+
+            align-items: center;
+
+            gap: 75px;
+        }
+
+
+        /* PHOTO CONTAINER */
+
+        .founder-photo-area {
+            position: relative;
+
+            width: 100%;
+
+            display: flex;
+
+            justify-content: center;
+        }
+
+
+        .founder-photo-card {
+            position: relative;
+
+            width: 100%;
+            max-width: 430px;
+
+            padding: 10px;
+
+            border-radius: 28px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 25px 65px rgba(16, 42, 86, 0.15);
+
+            border: 1px solid #e6ebf3;
+        }
+
+
+        /*
+           IMPORTANT:
+           Image is NOT cropped.
+        */
+
+        .founder-image {
+            position: relative;
+            z-index: 2;
+
+            width: 100%;
+
+            height: auto;
+
+            max-height: 600px;
+
+            object-fit: contain;
+
+            object-position: center;
+
+            border-radius: 20px;
+
+            background: #ffffff;
+        }
+
+
+        /* BLUE FRAME */
+
+        .founder-photo-card::after {
+            content: "";
+
+            position: absolute;
+
+            z-index: 0;
+
+            top: 18px;
+            left: 18px;
+
+            width: 100%;
+            height: 100%;
+
+            border: 3px solid #1769e0;
+
+            border-radius: 28px;
+
+            pointer-events: none;
+        }
+
+
+        /* FOUNDER BADGE */
+
+        .founder-badge {
+            position: absolute;
+
+            z-index: 10;
+
+            left: -30px;
+
+            bottom: 30px;
+
+            padding: 16px 22px;
+
+            min-width: 175px;
+
+            background: #ffffff;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.14);
+        }
+
+
+        .founder-badge strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #102a56;
+
+            font-size: 16px;
+        }
+
+
+        .founder-badge small {
+            color: #1769e0;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        /* FOUNDER CONTENT */
+
+        .founder-content h2 {
+            margin-bottom: 5px;
+
+            color: #102a56;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: clamp(34px, 4vw, 46px);
+
+            font-weight: 800;
+
+            line-height: 1.15;
+        }
+
+
+        .founder-role {
+            margin-bottom: 28px;
+
+            color: #1769e0;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        .founder-content p {
+            margin-bottom: 18px;
+
+            color: #667085;
+
+            font-size: 16px;
+        }
+
+
+        /* HIGHLIGHTS */
+
+        .founder-highlights {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 30px;
+        }
+
+
+        .highlight {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            background: #f5f8fd;
+
+            border: 1px solid #e8edf5;
+
+            border-radius: 12px;
+
+            transition: 0.3s ease;
+        }
+
+
+        .highlight:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(16,42,86,0.08);
+        }
+
+
+        .highlight i {
+            width: 40px;
+            height: 40px;
+
+            flex-shrink: 0;
+
+            display: grid;
+            place-items: center;
+
+            color: #1769e0;
+
+            background: #e6f0ff;
+
+            border-radius: 10px;
+        }
+
+
+        .highlight span {
+            color: #344054;
+
+            font-size: 14px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .stats-section {
+            padding: 35px 20px;
+
+            background: #102a56;
+        }
+
+
+        .stats-grid {
+            width: min(1100px, 92%);
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+
+        .stat {
+            padding: 18px;
+
+            text-align: center;
+
+            border-right:
+                1px solid rgba(255,255,255,0.15);
+        }
+
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+
+        .stat h3 {
+            margin-bottom: 3px;
+
+            color: #ffffff;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: 30px;
+
+            font-weight: 800;
+        }
+
+
+        .stat p {
+            color: #bcd1ee;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           STORY
+        ===================================================== */
+
+        .story-section {
+            background: #f6f8fc;
+        }
+
+
+        .story-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 30px;
+        }
+
+
+        .story-card {
+            padding: 38px;
+
+            background: #ffffff;
+
+            border: 1px solid #e5eaf2;
+
+            border-radius: 20px;
+
+            transition: 0.3s ease;
+        }
+
+
+        .story-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 20px 45px rgba(16,42,86,0.08);
+        }
+
+
+        .story-icon {
+            width: 58px;
+            height: 58px;
+
+            margin-bottom: 20px;
+
+            display: grid;
+            place-items: center;
+
+            color: #1769e0;
+
+            background: #eaf2ff;
+
+            border-radius: 14px;
+
+            font-size: 22px;
+        }
+
+
+        .story-card h3 {
+            margin-bottom: 12px;
+
+            color: #102a56;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: 23px;
+        }
+
+
+        .story-card p {
+            color: #667085;
+        }
+
+
+        /* =====================================================
+           VISION MISSION
+        ===================================================== */
+
+        .vision-section {
+            background: #ffffff;
+        }
+
+
+        .vision-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 30px;
+        }
+
+
+        .vision-card {
+            padding: 42px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f3f7ff,
+                    #ffffff
+                );
+
+            border: 1px solid #e2e9f5;
+
+            border-radius: 22px;
+        }
+
+
+        .vision-card.mission {
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef8ff,
+                    #ffffff
+                );
+        }
+
+
+        .vision-card i {
+            margin-bottom: 20px;
+
+            color: #1769e0;
+
+            font-size: 32px;
+        }
+
+
+        .vision-card h3 {
+            margin-bottom: 12px;
+
+            color: #102a56;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: 25px;
+        }
+
+
+        .vision-card p {
+            color: #667085;
+        }
+
+
+        /* =====================================================
+           VALUES
+        ===================================================== */
+
+        .values-section {
+            background: #f6f8fc;
+        }
+
+
+        .values-grid {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .value-card {
+            padding: 32px 24px;
+
+            background: #ffffff;
+
+            border: 1px solid #e5e9f0;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            transition: 0.3s ease;
+        }
+
+
+        .value-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 18px 40px rgba(16,42,86,0.08);
+        }
+
+
+        .value-icon {
+            width: 62px;
+            height: 62px;
+
+            margin: 0 auto 18px;
+
+            display: grid;
+            place-items: center;
+
+            color: #1769e0;
+
+            background: #eaf2ff;
+
+            border-radius: 50%;
+
+            font-size: 22px;
+        }
+
+
+        .value-card h3 {
+            margin-bottom: 8px;
+
+            color: #102a56;
+
+            font-family: "Poppins", sans-serif;
+        }
+
+
+        .value-card p {
+            color: #667085;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        .global-section {
+            background: #ffffff;
+        }
+
+
+        .global-box {
+            padding: 65px 40px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #071d3b,
+                    #1769e0
+                );
+
+            color: #ffffff;
+
+            border-radius: 25px;
+        }
+
+
+        .global-box > i {
+            margin-bottom: 20px;
+
+            font-size: 50px;
+        }
+
+
+        .global-box h2 {
+            margin-bottom: 15px;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: clamp(30px, 4vw, 43px);
+        }
+
+
+        .global-box p {
+            max-width: 760px;
+
+            margin: auto;
+
+            color: #dcecff;
+        }
+
+
+        .global-tags {
+            margin-top: 28px;
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+        }
+
+
+        .global-tags span {
+            padding: 8px 15px;
+
+            background: rgba(255,255,255,0.10);
+
+            border:
+                1px solid rgba(255,255,255,0.18);
+
+            border-radius: 50px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           CTA
+        ===================================================== */
+
+        .cta-section {
+            padding: 85px 20px;
+
+            background: #f6f8fc;
+        }
+
+
+        .cta-box {
+            width: min(1000px, 92%);
+
+            margin: auto;
+
+            padding: 60px 30px;
+
+            text-align: center;
+
+            background: #ffffff;
+
+            border: 1px solid #e4e9f1;
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 15px 45px rgba(16,42,86,0.07);
+        }
+
+
+        .cta-box h2 {
+            margin-bottom: 12px;
+
+            color: #102a56;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: clamp(29px, 4vw, 41px);
+        }
+
+
+        .cta-box p {
+            max-width: 680px;
+
+            margin: 0 auto 28px;
+
+            color: #667085;
+        }
+
+
+        .cta-button {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 14px 25px;
+
+            color: #ffffff;
+
+            background: #1769e0;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+
+            transition: 0.3s ease;
+        }
+
+
+        .cta-button:hover {
+            color: #ffffff;
+
+            background: #0d4fac;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .about-footer {
+            padding: 60px 20px 25px;
+
+            background: #071d3b;
+
+            color: #ffffff;
+        }
+
+
+        .footer-grid {
+            width: min(1150px, 92%);
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns: 1.5fr 1fr 1fr;
+
+            gap: 45px;
+        }
+
+
+        .footer-brand h3 {
+            margin-bottom: 12px;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: 24px;
+        }
+
+
+        .footer-brand h3 span {
+            color: #72b5ff;
+        }
+
+
+        .footer-brand p {
+            max-width: 440px;
+
+            color: #afc3dd;
+        }
+
+
+        .footer-column h4 {
+            margin-bottom: 16px;
+
+            font-family: "Poppins", sans-serif;
+        }
+
+
+        .footer-column a {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #afc3dd;
+
+            font-size: 14px;
+
+            transition: 0.3s ease;
+        }
+
+
+        .footer-column a:hover {
+            color: #ffffff;
+
+            padding-left: 4px;
+        }
+
+
+        .copyright {
+            width: min(1150px, 92%);
+
+            margin: 40px auto 0;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.12);
+
+            text-align: center;
+
+            color: #8ea6c4;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 950px) {
+
+            .navigation {
+                gap: 14px;
+            }
+
+
+            .founder-grid {
+                grid-template-columns: 380px 1fr;
+
+                gap: 45px;
+            }
+
+
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .stat {
+                border-bottom:
+                    1px solid rgba(255,255,255,0.15);
+            }
+
+
+            .stat:nth-child(2) {
+                border-right: none;
+            }
+
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .header-container {
+                min-height: 65px;
+            }
+
+
+            .navigation {
+                display: none;
+            }
+
+
+            .about-hero {
+                padding: 80px 20px;
+            }
+
+
+            .about-hero p {
+                font-size: 16px;
+            }
+
+
+            .section {
+                padding: 70px 20px;
+            }
+
+
+            .founder-grid {
+                grid-template-columns: 1fr;
+
+                gap: 50px;
+            }
+
+
+            .founder-photo-card {
+                max-width: 430px;
+
+                margin: auto;
+            }
+
+
+            /*
+               Mobile image also stays natural.
+               No fixed height.
+            */
+
+            .founder-image {
+                width: 100%;
+
+                height: auto;
+
+                max-height: none;
+
+                object-fit: contain;
+            }
+
+
+            .founder-badge {
+                left: 10px;
+
+                bottom: 20px;
+            }
+
+
+            .founder-highlights {
+                grid-template-columns: 1fr;
+            }
+
+
+            .story-grid,
+            .vision-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .stat {
+                border-right: none;
+            }
+
+
+            .global-box {
+                padding: 45px 22px;
+            }
+
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 450px) {
+
+            .about-hero h1 {
+                font-size: 34px;
+            }
+
+
+            .founder-content h2 {
+                font-size: 32px;
+            }
+
+
+            .founder-badge {
+                position: relative;
+
+                left: auto;
+                bottom: auto;
+
+                margin: -20px auto 0;
+
+                width: fit-content;
+            }
+
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .stat {
+                border-bottom:
+                    1px solid rgba(255,255,255,0.15);
+            }
+
+
+            .stat:last-child {
+                border-bottom: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <header class="about-header">
+
+        <div class="header-container">
+
+            <a href="index.html" class="brand">
+                AGIS<span>.</span>
+            </a>
+
+
+            <nav>
+
+                <ul class="navigation">
+
+                    <li>
+                        <a href="index.html">
+                            Home
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="about.html" class="active">
+                            About
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="services/accounting-finance/index.html">
+                            Services
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="industries/Education/index.html">
+                            Industries
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="portfolio/index.html">
+                            Portfolio
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="pages/contact.html">
+                            Contact
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a
+                            href="pages/contact.html"
+                            class="nav-button"
+                        >
+                            Get Started
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
+    <section class="about-hero">
+
+        <div class="hero-container">
+
+            <span class="hero-label">
+                About Aman Global International Services
+            </span>
+
+
+            <h1>
+                Building
+                <span>Global Opportunities</span>
+                Through Professional Services & Technology
+            </h1>
+
+
+            <p>
+                Aman Global International Services combines
+                professional expertise, business knowledge and
+                modern technology to provide practical solutions
+                for businesses, entrepreneurs, professionals and
+                organizations around the world.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOUNDER
+    ===================================================== -->
+
+    <section class="section founder-section">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <span>
+                    Leadership
+                </span>
+
+
+                <h2>
+                    Meet Our Founder
+                </h2>
+
+
+                <p>
+                    The vision behind Aman Global International
+                    Services.
+                </p>
+
+            </div>
+
+
+            <div class="founder-grid">
+
+
+                <!-- ================= PHOTO ================= -->
+
+                <div class="founder-photo-area">
+
+                    <div class="founder-photo-card">
+
+
+                        <!-- YOUR ACTUAL PHOTO -->
+
+                        <img
+                            src="assets/images/portfolio/aman-sah.jpg.jpg"
+                            alt="Aman Sah - Founder of Aman Global International Services"
+                            class="founder-image"
+                        >
+
+
+                        <div class="founder-badge">
+
+                            <strong>
+                                Aman Sah
+                            </strong>
+
+                            <small>
+                                Founder & Visionary
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================= CONTENT ================= -->
+
+                <div class="founder-content">
+
+                    <h2>
+                        Aman Sah
+                    </h2>
+
+
+                    <div class="founder-role">
+                        Founder & Visionary | Aman Global International Services
+                    </div>
+
+
+                    <p>
+                        Aman Global International Services was
+                        established with an ambitious vision to
+                        connect professional knowledge, business
+                        services and modern technology with global
+                        opportunities.
+                    </p>
+
+
+                    <p>
+                        With a strong interest in accounting,
+                        auditing, finance, business, artificial
+                        intelligence, technology, web development
+                        and digital transformation, Aman is working
+                        toward building a modern international
+                        service organization.
+                    </p>
+
+
+                    <p>
+                        The long-term objective is to make
+                        professional and technology-enabled
+                        services more accessible, practical and
+                        valuable for businesses, entrepreneurs,
+                        professionals and organizations worldwide.
+                    </p>
+
+
+                    <!-- HIGHLIGHTS -->
+
+                    <div class="founder-highlights">
+
+
+                        <div class="highlight">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                            <span>
+                                Accounting & Finance
+                            </span>
+
+                        </div>
+
+
+                        <div class="highlight">
+
+                            <i class="fa-solid fa-robot"></i>
+
+                            <span>
+                                AI & Technology
+                            </span>
+
+                        </div>
+
+
+                        <div class="highlight">
+
+                            <i class="fa-solid fa-globe"></i>
+
+                            <span>
+                                Global Business
+                            </span>
+
+                        </div>
+
+
+                        <div class="highlight">
+
+                            <i class="fa-solid fa-lightbulb"></i>
+
+                            <span>
+                                Innovation
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STATS
+    ===================================================== -->
+
+    <section class="stats-section">
+
+        <div class="stats-grid">
+
+
+            <div class="stat">
+
+                <h3>
+                    Global
+                </h3>
+
+                <p>
+                    International Vision
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <h3>
+                    8+
+                </h3>
+
+                <p>
+                    Service Areas
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <h3>
+                    AI
+                </h3>
+
+                <p>
+                    Technology Driven
+                </p>
+
+            </div>
+
+
+            <div class="stat">
+
+                <h3>
+                    24/7
+                </h3>
+
+                <p>
+                    Digital Accessibility
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         OUR STORY
+    ===================================================== -->
+
+    <section class="section story-section">
+
+        <div class="container">
+
+
+            <div class="section-heading">
+
+                <span>
+                    Our Journey
+                </span>
+
+
+                <h2>
+                    Our Story
+                </h2>
+
+
+                <p>
+                    From professional knowledge to a global
+                    service vision.
+                </p>
+
+            </div>
+
+
+            <div class="story-grid">
+
+
+                <div class="story-card">
+
+                    <div class="story-icon">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Where We Started
+                    </h3>
+
+
+                    <p>
+                        AGIS began with a focus on professional
+                        knowledge, accounting, auditing, business
+                        development and continuous learning.
+                        The vision later expanded toward technology,
+                        artificial intelligence and international
+                        services.
+                    </p>
+
+                </div>
+
+
+
+                <div class="story-card">
+
+                    <div class="story-icon">
+
+                        <i class="fa-solid fa-rocket"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Where We Are Going
+                    </h3>
+
+
+                    <p>
+                        Our long-term direction is to create a
+                        technology-enabled international organization
+                        that delivers professional, digital and
+                        business solutions across geographical
+                        boundaries.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         VISION & MISSION
+    ===================================================== -->
+
+    <section class="section vision-section">
+
+        <div class="container">
+
+
+            <div class="section-heading">
+
+                <span>
+                    Our Purpose
+                </span>
+
+
+                <h2>
+                    Vision & Mission
+                </h2>
+
+            </div>
+
+
+            <div class="vision-grid">
+
+
+                <div class="vision-card">
+
+                    <i class="fa-solid fa-eye"></i>
+
+
+                    <h3>
+                        Our Vision
+                    </h3>
+
+
+                    <p>
+                        To become a trusted international platform
+                        connecting professional expertise, business
+                        services and technology to create meaningful
+                        opportunities for people and organizations
+                        worldwide.
+                    </p>
+
+                </div>
+
+
+
+                <div class="vision-card mission">
+
+                    <i class="fa-solid fa-bullseye"></i>
+
+
+                    <h3>
+                        Our Mission
+                    </h3>
+
+
+                    <p>
+                        To deliver practical, reliable and innovative
+                        accounting, financial, technology, AI,
+                        analytics and digital solutions while
+                        continuously improving the way businesses
+                        operate and grow.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CORE VALUES
+    ===================================================== -->
+
+    <section class="section values-section">
+
+        <div class="container">
+
+
+            <div class="section-heading">
+
+                <span>
+                    What Drives Us
+                </span>
+
+
+                <h2>
+                    Our Core Values
+                </h2>
+
+
+                <p>
+                    Principles that guide our work and relationships.
+                </p>
+
+            </div>
+
+
+            <div class="values-grid">
+
+
+                <div class="value-card">
+
+                    <div class="value-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Integrity
+                    </h3>
+
+
+                    <p>
+                        We believe professional relationships should
+                        be built on honesty, responsibility and trust.
+                    </p>
+
+                </div>
+
+
+
+                <div class="value-card">
+
+                    <div class="value-icon">
+
+                        <i class="fa-solid fa-award"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Excellence
+                    </h3>
+
+
+                    <p>
+                        We continuously work to improve quality,
+                        knowledge and professional standards.
+                    </p>
+
+                </div>
+
+
+
+                <div class="value-card">
+
+                    <div class="value-icon">
+
+                        <i class="fa-solid fa-microchip"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Innovation
+                    </h3>
+
+
+                    <p>
+                        We use modern technology and AI to create
+                        smarter and more efficient solutions.
+                    </p>
+
+                </div>
+
+
+
+                <div class="value-card">
+
+                    <div class="value-icon">
+
+                        <i class="fa-solid fa-handshake"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Partnership
+                    </h3>
+
+
+                    <p>
+                        We focus on building meaningful and
+                        long-term relationships with clients.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         GLOBAL VISION
+    ===================================================== -->
+
+    <section class="section global-section">
+
+        <div class="container">
+
+
+            <div class="global-box">
+
+                <i class="fa-solid fa-earth-americas"></i>
+
+
+                <h2>
+                    A Global Vision
+                </h2>
+
+
+                <p>
+                    Aman Global International Services is being
+                    developed with a worldwide mindset. Our ambition
+                    is to provide accessible professional and
+                    technology solutions beyond geographical
+                    boundaries.
+                </p>
+
+
+                <div class="global-tags">
+
+                    <span>
+                        Accounting
+                    </span>
+
+                    <span>
+                        Finance
+                    </span>
+
+                    <span>
+                        Auditing
+                    </span>
+
+                    <span>
+                        AI Solutions
+                    </span>
+
+                    <span>
+                        Web Development
+                    </span>
+
+                    <span>
+                        Data Analytics
+                    </span>
+
+                    <span>
+                        Digital Marketing
+                    </span>
+
+                    <span>
+                        Media Production
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CTA
+    ===================================================== -->
+
+    <section class="cta-section">
+
+        <div class="cta-box">
+
+            <h2>
+                Let's Build Something Global
+            </h2>
+
+
+            <p>
+                Whether you are a business, entrepreneur,
+                organization or professional, AGIS is ready to
+                explore how professional services and technology
+                can help you move forward.
+            </p>
+
+
+            <a
+                href="pages/contact.html"
+                class="cta-button"
+            >
+
+                Contact AGIS
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer class="about-footer">
+
+        <div class="footer-grid">
+
+
+            <div class="footer-brand">
+
+                <h3>
+                    Aman Global
+                    <span>International Services</span>
+                </h3>
+
+
+                <p>
+                    Professional services, technology and global
+                    business solutions designed for a connected
+                    world.
+                </p>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Company
+                </h4>
+
+
+                <a href="index.html">
+                    Home
+                </a>
+
+
+                <a href="about.html">
+                    About Us
+                </a>
+
+
+                <a href="portfolio/index.html">
+                    Portfolio
+                </a>
+
+
+                <a href="pages/contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Services
+                </h4>
+
+
+                <a href="services/accounting-finance/index.html">
+                    Accounting & Finance
+                </a>
+
+
+                <a href="services/ai-solutions/index.html">
+                    AI Solutions
+                </a>
+
+
+                <a href="services/web-development/index.html">
+                    Web Development
+                </a>
+
+
+                <a href="services/data-analytics/index.html">
+                    Data Analytics
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 Aman Global International Services.
+            All Rights Reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- Main JavaScript -->
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
